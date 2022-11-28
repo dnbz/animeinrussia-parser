@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+*.log
+tmp/
+celerybeat-schedule
+
+.venv/
+__pycache__/
+
+.env

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "air-api"
+version = "0.1.0"
+description = ""
+authors = ["none"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+psycopg2 = {extras = ["c"], version = "^2.9.5"}
+django = "^4.1.3"
+python-dotenv = "^0.21.0"
+celery = "^5.2.7"
+djangorestframework = "^3.14.0"
+django-celery-beat = "^2.4.0"
+requests = "^2.28.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

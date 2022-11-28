@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: air-deployment
+  labels:
+    app: air
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: air
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: air
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+              hostPort: 45356
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pg-data
+          env:
+            - name: TZ
+              value: Europe/Moscow
+            - name: POSTGRES_DB
+              value: air
+            - name: POSTGRES_USER
+              value: dbuser
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: pg-password
+                  optional: false
+        - name: rabbitmq
+          image: rabbitmq:3-management-alpine
+          ports:
+            - containerPort: 5672
+              hostPort: 5672
+            - containerPort: 15672
+              hostPort: 15672
+          env:
+            - name: TZ
+              value: Europe/Moscow
+      volumes:
+        - name: pg-data
+          hostPath:
+            path: /var/lib/kube-volumes/pg-data
